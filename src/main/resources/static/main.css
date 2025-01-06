@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.card {
+ margin : 30px auto;
+ display : flex;
+}
+.card img {
+ width : 150px;
+ margin-right : 20px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap');
+.nav {
+ display: flex;
+ padding: 10px;
+ align-items: center;
+ font-family : 'Montserrat';
+}
+.nav a {
+ margin-right: 10px;
+ text-decoration : none;
+ font-weight : 400;
+ letter-spacing : -0.5px;
+}
+.nav .logo {
+ font-weight : 800;
+}
+
+input, button {
+ padding : 8px 13px;
+ margin-top : 5px;
+ border : 1px solid grey;
+ border-radius : 4px;
+ vertical-align : middle;
+}
+button {
+ background : black;
+ color : white;
+ border : none;
+}
+input {
+display : block;
+}
+
+.detail {
+  text-align : center;
+}
+.detail img{
+  max-width : 30%;
+  display : block;
+  margin : auto;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 6px 8px;
+    text-decoration: none;
+    color: black;
+    border: none;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: black;
+    color: white;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    pointer-events: none;
+}
+
+.pagination a.disabled {
+    color: #ccc;
+    pointer-events: none;
+    border-color: #eee;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+    font-weight: bold;
+}
