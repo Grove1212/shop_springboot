@@ -5,7 +5,6 @@ import com.stella223.shop.notice.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,13 +21,11 @@ public class ItemController {//API를 만들 수 있음
     private final ItemRepository itemRepository;
     private final NoticeRepository noticeRepository;
     private final ItemService itemService;
+    private final S3Service s3Service;
 
     @GetMapping("/list")
-    String itemList(Model model) {
-        List<Item> result = itemService.findAllItem();
-        model.addAttribute("items", result);
-
-        return "list.html";//메인페이지 접속하면 이거 보내주세요
+    String redirectToPageOne() {
+        return "redirect:/page/1";
     }
 
     @GetMapping("/notice")
@@ -39,14 +36,16 @@ public class ItemController {//API를 만들 수 있음
     }
 
     @GetMapping("/write")
-    String write(Model model) {
+    String write(Model model, Authentication auth) {
         return "write.html";
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam String title, String price, Authentication auth) {
-        itemService.saveItem(title, price, auth.getName());
-        return "redirect:/list";
+    String addPost(@RequestParam String title, String price, String fileURL, Authentication auth) {
+        Item item = itemService.saveItem(title, price, auth.getName(), fileURL);
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of((int) (item.id - 1), 5));
+
+        return "redirect:/page/"+ result.getTotalPages();
     }
 
     @GetMapping("/edit/{id}")
@@ -74,7 +73,7 @@ public class ItemController {//API를 만들 수 있음
     String detail(@PathVariable Integer id, Model model) {
         Optional<Item> result = itemService.findItemById(id);
         if (result.isPresent()) {
-            model.addAttribute("data", result.get());
+            model.addAttribute("item", result.get());
             return "detail.html";
         } else {
             return "redirect:/list";
@@ -93,10 +92,20 @@ public class ItemController {//API를 만들 수 있음
         Page<Item> result = itemRepository.findPageBy(PageRequest.of(id - 1, 5));
 
         model.addAttribute("items", result);
+        if(id > result.getTotalPages()){
+            return "redirect:/page/"+ result.getTotalPages();
+        }
         model.addAttribute("currentPage", id);
         model.addAttribute("totalPages", result.getTotalPages());
 
         return "list.html";//메인페이지 접속하면 이거 보내주세요
+    }
+
+    @GetMapping("/presigned-url")
+    @ResponseBody
+    String getURL(@RequestParam String filename){
+        var result = s3Service.createPresignedUrl("test/" + filename);
+        return result;
     }
 
 }

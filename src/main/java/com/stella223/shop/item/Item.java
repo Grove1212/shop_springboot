@@ -17,15 +17,17 @@ public class Item { // 원하는 테이블 이름
     public String title; // 문자 255자만 설정 가능
     public Integer price;
     public String username;
+    public String url;
 
     public Item() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public Item(String title, Integer price, String username) {
+    public Item(String title, Integer price, String username, String url) {
         this.title = title;
         this.price = price;
         this.username = username;
+        this.url = url;
     }
 }
 

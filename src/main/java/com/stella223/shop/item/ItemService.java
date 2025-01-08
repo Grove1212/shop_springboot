@@ -12,9 +12,10 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public void saveItem(String title, String price, String username){
-        Item item = new Item(title, Integer.parseInt(price), username);
+    public Item saveItem(String title, String price, String username, String url){
+        Item item = new Item(title, Integer.parseInt(price), username, url);
         itemRepository.save(item);
+        return item;
     }
 
     public void editItem(Integer id, String title, String price) throws Exception {

@@ -15,8 +15,36 @@
 <form action="/add" method="POST">
     <input name="title">
     <input name="price">
+    <input type="file" onchange="getURL(this)">
+    <input type="hidden" name="fileURL" id="fileURL">
         <button type="submit">전송</button>
 </form>
+
+<div class="card">
+    <img src="">
+</div>
+
+<script>
+    async function getURL(e){
+      let name = encodeURIComponent(e.files[0].name)
+      let url = await fetch('/presigned-url?filename=' + name)
+      url = await url.text()
+
+      let result = await fetch(url, {
+        method : 'PUT',
+        body : e.files[0]
+      })
+<!--      해당 url로 이미지 넣어서 s3에 PUT요청-->
+
+      if (result.ok){
+        const fileURL = result.url.split("?")[0]
+
+        document.querySelector('img').src = fileURL
+        document.getElementById('fileURL').value = fileURL
+      }
+
+    }
+</script>
 
 </body>
 </html>
