@@ -12,8 +12,17 @@ import java.time.format.DateTimeFormatter;
 @Controller
 public class BasicController {
     @GetMapping("/")
-    String hello() {
-        return "index.html";
+    @ResponseBody
+    String check() {
+        return "200";
+        //기본경로가 static 폴더
+        //메인페이지 접속하면 이거 보내주세요
+    }
+
+    @GetMapping("/health")
+    @ResponseBody
+    String healthCheck() {
+        return "200";
         //기본경로가 static 폴더
         //메인페이지 접속하면 이거 보내주세요
     }

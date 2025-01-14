@@ -12,7 +12,7 @@
 <div th:replace="~{ nav.html::navbar }"></div>
 
 <div class="card" th:each="item : ${items}">
-    <img th:src="${item.url == null ? 'https://placehold.co/300' : item.url }" alt="">
+    <img th:src="${item.url == null ? 'https://placehold.co/300' : item.url }" th:alt="링크 + ${item.url}">
     <div>
         <p th:text="${item.username}"></p>
         <a th:href="@{'/detail/' + ${item.id}}">
